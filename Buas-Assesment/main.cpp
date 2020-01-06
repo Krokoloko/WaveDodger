@@ -6,6 +6,12 @@
 //The math library from c++ to get access of the sine function.
 #include <cmath>
 
+//My custom classes for the project that will be put to use
+#include "InputManager.h"
+
+void Test() {
+	printf("Hello World\n");
+}
 
 //Main program
 int main()
@@ -13,6 +19,9 @@ int main()
 	//The window where the grahpics is drawed on.
 	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
 
+	InputManager inputManager;
+
+	inputManager.SetEvent(InputManager::Jump, &Test);
 
 	sf::VertexArray original_vertexes(sf::Triangles, 3);
 	sf::VertexArray vertexes;
@@ -37,32 +46,10 @@ int main()
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
+			inputManager.UpdateEvents(event);
+
 			if (event.type == sf::Event::Closed)
 				window.close();
-			if (event.type == sf::Event::KeyPressed) {
-				switch (event.key.code)
-				{
-				case sf::Keyboard::A:
-					printf("move left \n");
-					continue;
-
-				case sf::Keyboard::D:
-					printf("move right \n");
-					continue;
-
-				case sf::Keyboard::W:
-					printf("move up \n");
-					continue;
-
-				case sf::Keyboard::S:
-					printf("move down \n");
-					continue; 
-
-				default:
-					printf("key pressed \n");
-					break;
-				}
-			}
 		}
 		window.clear();
 		window.draw(vertexes);
