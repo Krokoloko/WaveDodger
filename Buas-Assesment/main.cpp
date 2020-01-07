@@ -8,20 +8,24 @@
 
 //My custom classes for the project that will be put to use
 #include "InputManager.h"
-
-void Test() {
-	printf("Hello World\n");
-}
+#include "Player.h"
 
 //Main program
 int main()
 {
 	//The window where the grahpics is drawed on.
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
 
 	InputManager inputManager;
 
-	inputManager.SetEvent(InputManager::Jump, &Test);
+	sf::VertexArray square(sf::Quads, 4);
+
+	square[0].position = sf::Vector2f(-5,5);
+	square[1].position = sf::Vector2f(5, 5);
+	square[2].position = sf::Vector2f(5, -5);
+	square[3].position = sf::Vector2f(-5, -5);
+
+	Player player(sf::Vector2f(400.f,300.f), 5.f,square);
 
 	sf::VertexArray original_vertexes(sf::Triangles, 3);
 	sf::VertexArray vertexes;
@@ -40,8 +44,7 @@ int main()
 
 	while (window.isOpen())
 	{
-		vertexes[2] = sf::Vector2f(original_vertexes[2].position.x, sin(time - clock() / 50) * 20 + original_vertexes[2].position.y);
-
+		//vertexes[2] = sf::Vector2f(original_vertexes[2].position.x, sin(time - clock() / 50) * 20 + original_vertexes[2].position.y);
 
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -52,7 +55,7 @@ int main()
 				window.close();
 		}
 		window.clear();
-		window.draw(vertexes);
+		window.draw(player.CollisionBox());
 		window.display();
 	}
 

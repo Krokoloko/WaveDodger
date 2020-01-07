@@ -132,17 +132,17 @@ void InputManager::TriggerEvent(sf::Event event, sf::Keyboard::Key input, void (
 //Deletes all references that are stored in the pointers
 InputManager::~InputManager()
 {
-	delete &_eventUp;
+	//delete &_eventUp;
 
-	delete &_eventDown;
+	//delete &_eventDown;
 	
-	delete &_eventLeft;
+	//delete &_eventLeft;
 
-	delete &_eventRight;
+	//delete &_eventRight;
 
-	delete &_eventJump;
+	//delete &_eventJump;
 
-	delete &_eventFire;
+	//delete &_eventFire;
 
- 	delete &_eventPause;
+ 	//delete &_eventPause;
 }
