@@ -4,6 +4,8 @@ class Player
 {
 
 public:
+	Player();
+
 	Player(sf::Vector2f, float,  sf::VertexArray);
 
 	enum PlayerState {
