@@ -7,6 +7,7 @@
 Game::Game(sf::RenderWindow *window)
 {
 	_window = window;
+	_window->setFramerateLimit(60);
 }
 
 void Game::Start() {

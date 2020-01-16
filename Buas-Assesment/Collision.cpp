@@ -10,6 +10,7 @@ Collision::Collision(sf::Vector2f* aPosition)
 	collision[1].position = sf::Vector2f(5, 5);
 	collision[2].position = sf::Vector2f(5, -5);
 	collision[3].position = sf::Vector2f(-5, -5);
+	_colliding = false;
 }
 
 Collision::Collision(sf::Vector2f* aPosition, sf::VertexArray aCollision) 
@@ -46,16 +47,30 @@ bool Collision::_isInArea(sf::Vector2f point,sf::Vector2f areaPoint1, sf::Vector
 	return (area1 + area2 + area3 == area);
 }
 
-bool Collision::OnHitStart(Collision collider) {
-
+bool Collision::OnHitStartWith(Collision collider) {
+	if (_isColliding(collider)) {
+		if (!_colliding) {
+			_colliding = true;
+			return true;
+		}
+		else return false;
+	}
+	else return false;
 }
 
-bool Collision::OnHit(Collision collider) {
-
+bool Collision::OnHitWith(Collision collider) {
+	if (_isColliding(collider)) {
+		return true;
+	}
+	else return false;
 }
 
-bool Collision::OnHitRelease(Collision collider) {
-
+bool Collision::OnHitReleaseWith(Collision collider) {
+	if (!OnHitWith(collider)) {
+		_colliding = false;
+		return true;
+	}
+	else return false;
 }
 
 Collision::~Collision()

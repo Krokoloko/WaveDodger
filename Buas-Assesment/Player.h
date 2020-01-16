@@ -1,23 +1,25 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Collision.h"
 class Player
 {
 
 public:
 	Player();
 
-	Player(sf::Vector2f, float,  sf::VertexArray);
+	Player(sf::Vector2f, float);
 
 	enum PlayerState {
 		Grounded,
 		Airborne
 	};
 
+	Collision collider;
+
 	sf::Vector2f Position();
 	sf::Vector2f Velocity();
 	sf::Vector2f Accelleration();
 
-	sf::VertexArray CollisionBox();
 	float Weight();
 
 	void Jump();

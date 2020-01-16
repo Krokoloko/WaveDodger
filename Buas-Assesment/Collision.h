@@ -8,14 +8,16 @@ public:
 
 	sf::VertexArray collision;
 
-	bool OnHitStart(Collision);
-	bool OnHit(Collision);
-	bool OnHitRelease(Collision);
+	bool OnHitStartWith(Collision);
+	bool OnHitWith(Collision);
+	bool OnHitReleaseWith(Collision);
 
 	~Collision();
 private:
 	bool _isColliding(Collision);
 	
+	bool _colliding;
+
 	bool _isInArea(sf::Vector2f, sf::Vector2f, sf::Vector2f, sf::Vector2f);
 	float _areaTriangle(sf::Vector2f, sf::Vector2f, sf::Vector2f);
 	
