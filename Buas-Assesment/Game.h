@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "InputManager.h"
 #include "Player.h"
+#include "SineWall.h"
 class Game
 {
 public:
@@ -13,8 +14,9 @@ public:
 
 	~Game();
 
-protected:
+private:
 	sf::RenderWindow* _window;
+	SineWall wall;
 	Player player;
 	InputManager inputManager;
 };

@@ -1,10 +1,12 @@
 #include "Collision.h"
+#include <SFML/Graphics.hpp>
 
+Collision::Collision() {
 
+}
 
 Collision::Collision(sf::Vector2f* aPosition)
 {
-	_position = aPosition;
 	collision = sf::VertexArray(sf::Quads,4);
 	collision[0].position = sf::Vector2f(-5,5);
 	collision[1].position = sf::Vector2f(5, 5);
@@ -13,15 +15,15 @@ Collision::Collision(sf::Vector2f* aPosition)
 	_colliding = false;
 }
 
-Collision::Collision(sf::Vector2f* aPosition, sf::VertexArray aCollision) 
+Collision::Collision(Object *aTransform , sf::VertexArray aCollision)
 {
-	_position = aPosition;
+	_transform = aTransform;
 	collision = aCollision;
 }
 
 bool Collision::_isColliding(Collision collider) {
 	for (int i = 0; i < collider.collision.getVertexCount() - 2; i++) {
-		if (_isInArea(*_position, collider.collision[i].position, 
+		if (_isInArea(_transform->Position(), collider.collision[i].position, 
 			collider.collision[i+1].position, collider.collision[i+2].position)) {
 
 			return true;

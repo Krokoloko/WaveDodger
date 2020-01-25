@@ -30,6 +30,7 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
+		game.Update();
 		window.clear();
 		game.Draw();
 		window.display();

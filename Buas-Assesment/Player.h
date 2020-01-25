@@ -1,13 +1,14 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Collision.h"
-class Player
+#include "Object.h"
+class Player : public Object
 {
 
 public:
 	Player();
 
-	Player(sf::Vector2f, float);
+	Player(sf::Vector2f, float, Collision);
 
 	enum PlayerState {
 		Grounded,
@@ -16,9 +17,10 @@ public:
 
 	Collision collider;
 
-	sf::Vector2f Position();
 	sf::Vector2f Velocity();
 	sf::Vector2f Accelleration();
+
+	Collision CollisionBox();
 
 	float Weight();
 
@@ -27,11 +29,10 @@ public:
 
 	~Player();
 private:
-	sf::Vector2f _position;
 	sf::Vector2f _velocity;
 	sf::Vector2f _accelleration;
 
-	sf::VertexArray _collisionBox;
+	Collision _collisionBox;
 
 	Player::PlayerState _state;
 	int _jumpForce;

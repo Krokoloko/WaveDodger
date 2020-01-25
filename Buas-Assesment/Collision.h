@@ -1,10 +1,12 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Object.h"
 class Collision
 {
 public:
+	Collision();
 	Collision(sf::Vector2f*);
-	Collision(sf::Vector2f*, sf::VertexArray);
+	Collision(Object *, sf::VertexArray);
 
 	sf::VertexArray collision;
 
@@ -21,6 +23,6 @@ private:
 	bool _isInArea(sf::Vector2f, sf::Vector2f, sf::Vector2f, sf::Vector2f);
 	float _areaTriangle(sf::Vector2f, sf::Vector2f, sf::Vector2f);
 	
-	sf::Vector2f* _position;
+	Object* _transform;
 };
 
