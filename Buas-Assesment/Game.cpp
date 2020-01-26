@@ -8,16 +8,13 @@
 # define M_PI           3.14159265358979323846  /* pi */
 
 #include <cmath>
+#include <iostream>
 #include <SFML/Graphics.hpp>
 
 Game::Game(sf::RenderWindow *window)
 {
 	_window = window;
 	_window->setFramerateLimit(60);
-}
-
-float SineFunction(float x) {
-	return (sin(x/2)-M_PI*2)*4;
 }
 
 void Game::Start() {
@@ -33,13 +30,24 @@ void Game::Start() {
 	Collision playerCol(&(player), square);
 	sf::Vector2f position = sf::Vector2f(150, 400);
 
-	wall = SineWall(50,2,100,50, position,sf::Vector2f(0.4,0.6),(*SineFunction));
+	auto sineFunction = [](float x, float m) {return float(fmin(0,(sin((x / 6) - M_PI * 6))*m)); };
+
+	wall = SineWall(50,2,100,50, position,sf::Vector2f(0.4,0.6),sineFunction);
 	player = Player(sf::Vector2f(400.f, 300.f), 5.f, playerCol);
 }
 
 void Game::Draw() {
 	_window->draw(player.CollisionBox().collision);
 	_window->draw(wall.Wall());
+}
+
+void Game::UpdateEvent(TriggerEvents e) {
+	switch (e) {
+		case TriggerEvents::GenerateWave:
+			std::cout << "Generate waves\n";
+			wall.GenerateWave();
+			break;
+	}
 }
 
 void Game::Update() {

@@ -3,15 +3,17 @@ class Wave
 {
 public:
 	Wave();
-	Wave(int);
+	Wave(int, float, float);
 	int Length();
 	int UnitsTraveled();
+	float MaxLength();
 	float DistanceTraveled();
+	float WavePower();
 
 	//Returns an array of values that corespond the wave
-	int* GetWaveValues();
+	float* GetWaveValues();
 
-	void UpdateWaves(float, float(*_waveFunction)(float));
+	void UpdateWaves(float, float(*_waveFunction)(float, float));
 
 	~Wave();
 private:
@@ -19,8 +21,10 @@ private:
 
 	int _length;
 	int _unitsTraveled;
+	float _maxLength; 
 	float _distanceTraveled;
+	float _wavePower;
 
-	int* _waveValues;
+	float* _waveValues;
 };
 

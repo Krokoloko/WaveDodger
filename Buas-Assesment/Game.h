@@ -8,8 +8,11 @@ class Game
 public:
 	Game(sf::RenderWindow*);
 
+	enum TriggerEvents {GenerateWave};
+
 	void Start();
 	void Draw();
+	void UpdateEvent(TriggerEvents);
 	void Update();
 
 	~Game();

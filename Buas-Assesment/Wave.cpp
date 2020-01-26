@@ -4,8 +4,11 @@ Wave::Wave()
 {
 }
 
-Wave::Wave(int aLength) {
+Wave::Wave(int aLength, float aWavePower, float aMaxLength) {
 	_length = aLength;
+	_waveValues = new float[_length];
+	_wavePower = aWavePower;
+	_maxLength = aMaxLength;
 }
 
 int Wave::Length() {
@@ -16,19 +19,27 @@ int Wave::UnitsTraveled() {
 	return _unitsTraveled;
 }
 
+float Wave::MaxLength() {
+	return _maxLength;
+}
+
 float Wave::DistanceTraveled() {
 	return _distanceTraveled;
 }
 
-int* Wave::GetWaveValues() {
+float Wave::WavePower() {
+	return _wavePower;
+}
+
+float* Wave::GetWaveValues() {
 	return _waveValues;
 }
 
-void Wave::UpdateWaves(float step, float(*_waveFunction)(float)) {
+void Wave::UpdateWaves(float step, float(*_waveFunction)(float, float)) {
 	_distanceTraveled += step;
 	_unitsTraveled++;
 	for (int i = 0; i < _length; i++) {
-		_waveValues[i] = _waveFunction(_distanceTraveled +(i*step));
+		_waveValues[i] = _waveFunction(_distanceTraveled + (float(i * step)), _wavePower);
 	}
 }
 

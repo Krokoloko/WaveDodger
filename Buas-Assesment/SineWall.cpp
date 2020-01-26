@@ -3,12 +3,15 @@
 #include <cmath>
 #include <iostream>
 
+# define M_PI           3.14159265358979323846  /* pi */
+
+
 SineWall::SineWall()
 {
 }
 
 SineWall::SineWall(int aCubeSideCount, int aMaxWaveAmount, float aWidth, float aLength,sf::Vector2f aPosition, 
-	sf::Vector2f aDirection, float(*aWaveFunction)(float)) {
+	sf::Vector2f aDirection, float(*aWaveFunction)(float, float)) {
 	
 	_cubeSideCount = aCubeSideCount;
 	_maxWaveAmount = aMaxWaveAmount;
@@ -17,23 +20,60 @@ SineWall::SineWall(int aCubeSideCount, int aMaxWaveAmount, float aWidth, float a
 	_position = aPosition;
 	_direction = aDirection;
 	_sineFunction = aWaveFunction;
+	_waveCount = 0;
+
+	_debug = true;
 
 	_waves = new Wave[_maxWaveAmount];
-	_wall = sf::VertexArray(sf::Quads, _cubeSideCount * 5);
+	_wall = sf::VertexArray(sf::Quads, _cubeSideCount * 4);
 
 	for (int i = 0; i < _cubeSideCount; i++) {
-		_wall[(i*5)].position = sf::Vector2f(
-			-_width / 2 + i * (_width/_cubeSideCount),
+		_wall[(i * 4)].position = sf::Vector2f(
+			_width / 2 + (_width/_cubeSideCount)*i,
+			-_length / 2
+		) + _position;
+		_wall[(i * 4) + 1].position = sf::Vector2f(
+			_width / 2 + (_width / _cubeSideCount)*(i + 1),
+			-_length / 2
+		) + _position;
+		_wall[(i * 4) + 2].position = sf::Vector2f(
+			_width / 2 + (_width / _cubeSideCount )*(i + 1),
 			_length / 2
 		) + _position;
-		std::cout << _wall[i].position.x << ", " << _wall[i].position.y << "\n";
+		_wall[(i * 4) + 3].position = sf::Vector2f(
+			_width / 2 + (_width / _cubeSideCount)*i,
+			_length / 2
+		) + _position;
+
+		_wallOrigin = _wall;
+
+		std::cout << "Cube( (" << _wall[(i * 4)].position.x << "," << _wall[(i * 4)].position.y << ") , (" << _wall[(i * 4) + 1].position.x << "," << _wall[(i * 4) + 1].position.y << ") , ("
+			<< _wall[(i * 4) + 2].position.x << "," << _wall[(i * 4) + 2].position.y << ") , (" << _wall[(i * 4) + 3].position.x << "," << _wall[(i * 4) + 3].position.y << ") );\n";
+
+		if (i == 0) {
+			for (int j = 0; j < 4; j++) {
+				_wall[(i*4 + j)].color = sf::Color::Green;
+			}
+		}
+		else {
+			if (i % 2 == 0) {
+				for (int j = 0; j < 4; j++) {
+					_wall[(i * 4 + j)].color = sf::Color::Green;
+				}
+			}
+			else {
+				for (int j = 0; j < 4; j++) {
+					_wall[(i * 4 + j)].color = sf::Color::Yellow;
+				}
+			}
+		}
 	}
 }
 
 void SineWall::GenerateWave() {
 	if (_waveCount < _maxWaveAmount) {
 		
-		Wave wave(_cubeSideCount);
+		Wave wave(_cubeSideCount, 25, M_PI*6);
 		
 		_waves[_waveCount] = wave;
 
@@ -46,12 +86,28 @@ void SineWall::Update() {
 		
 		_waves[i].UpdateWaves(0.314,_sineFunction);
 
-		int* waveVals = _waves[i].GetWaveValues();
+		float* waveVals = _waves[i].GetWaveValues();
 		for (int j = 0; j < _waves[i].Length(); j++) {
-			if (j-_waves[i].UnitsTraveled() >= 0 && j-_waves[i].UnitsTraveled() < _wall.getVertexCount()) {
-				sf::Vector2f waveFrequent(_wall[j].position.x, waveVals[j]);
-				_wall[j - _waves[i].UnitsTraveled()].position = waveFrequent;
+			int modulo;
+
+			if ((_waves[i].UnitsTraveled()) - (j+1*4) != 0) {
+				modulo = ((_waves[i].UnitsTraveled()) - (j+1*4)) % 4;
 			}
+			else modulo = 0;
+
+			//Is it within the wall
+			if (_waves[i].UnitsTraveled() - (j*4) + _waves[i].MaxLength() >= 0 && _waves[i].UnitsTraveled() - (j * 4) + _waves[i].MaxLength() < _wall.getVertexCount()  && modulo == 0) {
+
+				if (_waves[i].UnitsTraveled() - (j*4) - _waves[i].MaxLength()) {
+
+				}
+				_wall[(j * 4)].position = _wallOrigin[(j * 4)].position + sf::Vector2f(0, waveVals[j]);
+				_wall[(j * 4) + 1].position =_wallOrigin [(j * 4) + 1].position + sf::Vector2f(0, waveVals[j]);
+
+			}
+		}
+		if (_waves[i].DistanceTraveled() + _waves[i].UnitsTraveled() - _waves[i].MaxLength()) {
+			std::cout << "Delete";
 		}
 	}
 	
