@@ -1,5 +1,6 @@
 #include "Collision.h"
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 Collision::Collision() {
 
@@ -21,10 +22,14 @@ Collision::Collision(Object *aTransform , sf::VertexArray aCollision)
 	collision = aCollision;
 }
 
-bool Collision::_isColliding(Collision collider) {
-	for (int i = 0; i < collider.collision.getVertexCount() - 2; i++) {
-		if (_isInArea(_transform->Position(), collider.collision[i].position, 
-			collider.collision[i+1].position, collider.collision[i+2].position)) {
+bool Collision::_isColliding(sf::VertexArray collider) {
+	std::cout << collider.getVertexCount();
+	for (int i = 0; i < collider.getVertexCount(); i++) {
+		std::cout << i << " : ( " << collider[i].position.x << ", " << collider[i].position.y << " )\n";
+		std::cout << i + 1 << " : ( " << collider[i + 1].position.x << ", " << collider[i + 1].position.y << " )\n";
+		std::cout << i + 2 << " : ( " << collider[i + 2].position.x << ", " << collider[i + 2].position.y << " )\n";
+		if (_isInArea(_transform->Position(), collider[i].position, 
+			collider[i+1].position, collider[i+2].position)) {
 
 			return true;
 
@@ -49,7 +54,7 @@ bool Collision::_isInArea(sf::Vector2f point,sf::Vector2f areaPoint1, sf::Vector
 	return (area1 + area2 + area3 == area);
 }
 
-bool Collision::OnHitStartWith(Collision collider) {
+bool Collision::OnHitStartWith(sf::VertexArray collider) {
 	if (_isColliding(collider)) {
 		if (!_colliding) {
 			_colliding = true;
@@ -60,14 +65,14 @@ bool Collision::OnHitStartWith(Collision collider) {
 	else return false;
 }
 
-bool Collision::OnHitWith(Collision collider) {
+bool Collision::OnHitWith(sf::VertexArray collider) {
 	if (_isColliding(collider)) {
 		return true;
 	}
 	else return false;
 }
 
-bool Collision::OnHitReleaseWith(Collision collider) {
+bool Collision::OnHitReleaseWith(sf::VertexArray collider) {
 	if (!OnHitWith(collider)) {
 		_colliding = false;
 		return true;

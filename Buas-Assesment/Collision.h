@@ -10,13 +10,13 @@ public:
 
 	sf::VertexArray collision;
 
-	bool OnHitStartWith(Collision);
-	bool OnHitWith(Collision);
-	bool OnHitReleaseWith(Collision);
+	bool OnHitStartWith(sf::VertexArray);
+	bool OnHitWith(sf::VertexArray);
+	bool OnHitReleaseWith(sf::VertexArray);
 
 	~Collision();
 private:
-	bool _isColliding(Collision);
+	bool _isColliding(sf::VertexArray);
 	
 	bool _colliding;
 

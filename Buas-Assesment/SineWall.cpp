@@ -47,8 +47,8 @@ SineWall::SineWall(int aCubeSideCount, int aMaxWaveAmount, float aWidth, float a
 
 		_wallOrigin = _wall;
 
-		std::cout << "Cube( (" << _wall[(i * 4)].position.x << "," << _wall[(i * 4)].position.y << ") , (" << _wall[(i * 4) + 1].position.x << "," << _wall[(i * 4) + 1].position.y << ") , ("
-			<< _wall[(i * 4) + 2].position.x << "," << _wall[(i * 4) + 2].position.y << ") , (" << _wall[(i * 4) + 3].position.x << "," << _wall[(i * 4) + 3].position.y << ") );\n";
+		//std::cout << "Cube( (" << _wall[(i * 4)].position.x << "," << _wall[(i * 4)].position.y << ") , (" << _wall[(i * 4) + 1].position.x << "," << _wall[(i * 4) + 1].position.y << ") , ("
+		//	<< _wall[(i * 4) + 2].position.x << "," << _wall[(i * 4) + 2].position.y << ") , (" << _wall[(i * 4) + 3].position.x << "," << _wall[(i * 4) + 3].position.y << ") );\n";
 
 		if (i == 0) {
 			for (int j = 0; j < 4; j++) {
@@ -96,19 +96,18 @@ void SineWall::Update() {
 			else modulo = 0;
 
 			//Is it within the wall
-			if (_waves[i].UnitsTraveled() - (j*4) + _waves[i].MaxLength() >= 0 && _waves[i].UnitsTraveled() - (j * 4) + _waves[i].MaxLength() < _wall.getVertexCount()  && modulo == 0) {
+			if (modulo == 0) {
 
-				if (_waves[i].UnitsTraveled() - (j*4) - _waves[i].MaxLength()) {
-
+				if (_waves[i].UnitsTraveled() - (j*4) > (j*4) + _waves[i].MaxLength() && _waves[i].UnitsTraveled() - (j*4) < _waves[i].UnitsTraveled() + _waves[i].MaxLength()) {
+					_wall[(j * 4)].position = _wallOrigin[(j * 4)].position + sf::Vector2f(0, waveVals[j]);
+					_wall[(j * 4) + 1].position = _wallOrigin[(j * 4) + 1].position + sf::Vector2f(0, waveVals[j]);
 				}
-				_wall[(j * 4)].position = _wallOrigin[(j * 4)].position + sf::Vector2f(0, waveVals[j]);
-				_wall[(j * 4) + 1].position =_wallOrigin [(j * 4) + 1].position + sf::Vector2f(0, waveVals[j]);
-
+				
 			}
 		}
-		if (_waves[i].DistanceTraveled() + _waves[i].UnitsTraveled() - _waves[i].MaxLength()) {
+		/*if (_waves[i].DistanceTraveled() + _waves[i].UnitsTraveled() - _waves[i].MaxLength()) {
 			std::cout << "Delete";
-		}
+		}*/
 	}
 	
 }

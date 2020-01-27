@@ -28,12 +28,12 @@ void Game::Start() {
 	square[3].position = sf::Vector2f(-5, -5);
 
 	Collision playerCol(&(player), square);
-	sf::Vector2f position = sf::Vector2f(150, 400);
+	sf::Vector2f position = sf::Vector2f(0, 500);
 
 	auto sineFunction = [](float x, float m) {return float(fmin(0,(sin((x / 6) - M_PI * 6))*m)); };
 
-	wall = SineWall(50,2,100,50, position,sf::Vector2f(0.4,0.6),sineFunction);
-	player = Player(sf::Vector2f(400.f, 300.f), 5.f, playerCol);
+	wall = SineWall(200,2,500,50, position,sf::Vector2f(0.4,0.6),sineFunction);
+	player = Player(sf::Vector2f(400.f, 300.f), 5.f, 2.f, playerCol);
 }
 
 void Game::Draw() {
@@ -50,8 +50,14 @@ void Game::UpdateEvent(TriggerEvents e) {
 	}
 }
 
+void Game::CollisionUpdate() {
+	if (player.CollisionBox().OnHitWith(wall.Wall())) {
+
+	}
+}
+
 void Game::Update() {
-	player.Update();
+	player.Update(wall);
 	wall.Update();
 }
 

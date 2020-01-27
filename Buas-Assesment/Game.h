@@ -13,6 +13,7 @@ public:
 	void Start();
 	void Draw();
 	void UpdateEvent(TriggerEvents);
+	void CollisionUpdate();
 	void Update();
 
 	~Game();

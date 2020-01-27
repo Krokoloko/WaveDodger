@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Collision.h"
+#include "SineWall.h"
 #include "Object.h"
 class Player : public Object
 {
@@ -8,11 +9,13 @@ class Player : public Object
 public:
 	Player();
 
-	Player(sf::Vector2f, float, Collision);
+	Player(sf::Vector2f, float, float, Collision);
 
 	enum PlayerState {
+		None,
 		Grounded,
-		Airborne
+		Airborne,
+		Dead
 	};
 
 	Collision collider;
@@ -21,11 +24,12 @@ public:
 	sf::Vector2f Accelleration();
 
 	Collision CollisionBox();
+	PlayerState State();
 
 	float Weight();
 
 	void Jump();
-	void Update();
+	void Update(SineWall);
 
 	~Player();
 private:
