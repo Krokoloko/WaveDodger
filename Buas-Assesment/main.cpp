@@ -5,7 +5,7 @@
 
 //The math library from c++ to get access of the sine function.
 #include <cmath>
-
+#include <iostream>
 //My custom classes for the project that will be put to use
 #include "Game.h"
 
@@ -27,9 +27,16 @@ int main()
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
+			if (event.type == sf::Event::KeyPressed) {
+				if (event.key.code == sf::Keyboard::Space) {
+					game.UpdateEvent(Game::GenerateWave);
+				}
+			}
+
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
+		game.Update();
 		window.clear();
 		game.Draw();
 		window.display();

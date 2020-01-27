@@ -1,35 +1,42 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-class Player
+#include "Collision.h"
+#include "SineWall.h"
+#include "Object.h"
+class Player : public Object
 {
 
 public:
 	Player();
 
-	Player(sf::Vector2f, float,  sf::VertexArray);
+	Player(sf::Vector2f, float, float, Collision);
 
 	enum PlayerState {
+		None,
 		Grounded,
-		Airborne
+		Airborne,
+		Dead
 	};
 
-	sf::Vector2f Position();
+	Collision collider;
+
 	sf::Vector2f Velocity();
 	sf::Vector2f Accelleration();
 
-	sf::VertexArray CollisionBox();
+	Collision CollisionBox();
+	PlayerState State();
+
 	float Weight();
 
 	void Jump();
-	void Update();
+	void Update(SineWall);
 
 	~Player();
 private:
-	sf::Vector2f _position;
 	sf::Vector2f _velocity;
 	sf::Vector2f _accelleration;
 
-	sf::VertexArray _collisionBox;
+	Collision _collisionBox;
 
 	Player::PlayerState _state;
 	int _jumpForce;
