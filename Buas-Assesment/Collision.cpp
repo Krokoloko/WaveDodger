@@ -23,11 +23,12 @@ Collision::Collision(Object *aTransform , sf::VertexArray aCollision)
 }
 
 bool Collision::_isColliding(sf::VertexArray collider) {
-	std::cout << collider.getVertexCount();
-	for (int i = 0; i < collider.getVertexCount(); i++) {
-		std::cout << i << " : ( " << collider[i].position.x << ", " << collider[i].position.y << " )\n";
+	//std::cout << "Self: " << _transform->Position().x << ", " << _transform->Position().y << "\n";
+	for (int i = 0; i < collider.getVertexCount()-2; i++) {
+		/*std::cout << i << " : ( " << collider[i].position.x << ", " << collider[i].position.y << " )\n";
 		std::cout << i + 1 << " : ( " << collider[i + 1].position.x << ", " << collider[i + 1].position.y << " )\n";
-		std::cout << i + 2 << " : ( " << collider[i + 2].position.x << ", " << collider[i + 2].position.y << " )\n";
+		std::cout << i + 2 << " : ( " << collider[i + 2].position.x << ", " << collider[i + 2].position.y << " )\n";*/
+		
 		if (_isInArea(_transform->Position(), collider[i].position, 
 			collider[i+1].position, collider[i+2].position)) {
 
@@ -39,9 +40,16 @@ bool Collision::_isColliding(sf::VertexArray collider) {
 }
 
 float Collision::_areaTriangle(sf::Vector2f point1,sf::Vector2f point2,sf::Vector2f point3) {
-	return (point1.x*(point2.y - point3.y) + 
-			point2.x*(point3.y - point1.y) + 
-			point3.x*(point1.y - point2.y))/2;
+	float area = abs((point1.x*(point2.y - point3.y)) +
+		(point2.x*(point3.y - point1.y)) +
+		(point3.x*(point1.y - point2.y)));
+
+	//std::cout << "   :" << area << "\n";
+
+	if (area == 0) {
+		return 0;
+	}
+	else return area / 2;
 }
 
 bool Collision::_isInArea(sf::Vector2f point,sf::Vector2f areaPoint1, sf::Vector2f areaPoint2, sf::Vector2f areaPoint3) {

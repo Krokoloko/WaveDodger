@@ -52,18 +52,18 @@ SineWall::SineWall(int aCubeSideCount, int aMaxWaveAmount, float aWidth, float a
 
 		if (i == 0) {
 			for (int j = 0; j < 4; j++) {
-				_wall[(i*4 + j)].color = sf::Color::Green;
+				_wall[(i*4 + j)].color = sf::Color::Red;
 			}
 		}
 		else {
 			if (i % 2 == 0) {
 				for (int j = 0; j < 4; j++) {
-					_wall[(i * 4 + j)].color = sf::Color::Green;
+					_wall[(i * 4 + j)].color = sf::Color::Red;
 				}
 			}
 			else {
 				for (int j = 0; j < 4; j++) {
-					_wall[(i * 4 + j)].color = sf::Color::Yellow;
+					_wall[(i * 4 + j)].color = sf::Color::Red;
 				}
 			}
 		}
@@ -73,11 +73,12 @@ SineWall::SineWall(int aCubeSideCount, int aMaxWaveAmount, float aWidth, float a
 void SineWall::GenerateWave() {
 	if (_waveCount < _maxWaveAmount) {
 		
-		Wave wave(_cubeSideCount, 25, M_PI*6);
+		Wave wave(_cubeSideCount, 35, M_PI*6);
 		
 		_waves[_waveCount] = wave;
 
 		_waveCount++;
+
 	}
 }
 

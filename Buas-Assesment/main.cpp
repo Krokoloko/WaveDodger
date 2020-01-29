@@ -29,7 +29,7 @@ int main()
 		{
 			if (event.type == sf::Event::KeyPressed) {
 				if (event.key.code == sf::Keyboard::Space) {
-					game.UpdateEvent(Game::GenerateWave);
+					game.UpdateEvent(Game::Jump);
 				}
 			}
 

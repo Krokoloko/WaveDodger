@@ -30,6 +30,7 @@ public:
 
 	void Jump();
 	void Update(SineWall);
+	void UpdatePhysics();
 
 	~Player();
 private:
@@ -40,6 +41,8 @@ private:
 
 	Player::PlayerState _state;
 	int _jumpForce;
+
+	bool _jumped;
 	
 	float _weight;
 };

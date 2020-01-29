@@ -19,7 +19,9 @@ Player::Player(sf::Vector2f aPosition, float aJumpForce, float aWeight, Collisio
 	_jumpForce = aJumpForce;
 
 	_collisionBox = aCollisionBox;
-	
+	_state = PlayerState::None;
+
+	_jumped = false;
 	//std::cout << position.x << " , " << position.y << "\n";
 }
 
@@ -39,47 +41,67 @@ Collision Player::CollisionBox() {
 	return collisionBox;
 }
 
+Player::PlayerState Player::State() {
+	return _state;
+}
+
 float Player::Weight() {
 	return _weight;;
 }
 
 void Player::Jump() {
 	if (_state != Player::Airborne) {
-		_velocity = sf::Vector2f(0,1*_jumpForce);
+		_velocity = sf::Vector2f(0, 1 * _jumpForce);
+		_jumped = true;
 	}
 }
 
 void Player::Update(SineWall wall) {
 	switch (_state) {
 		case Player::Airborne:
-			if (_collisionBox.OnHitStartWith(wall.Wall())) {
-				_state = Player::Grounded;
+			if (_collisionBox.OnHitWith(wall.Wall())) {
+				_accelleration = sf::Vector2f(0, 0);
+				_velocity = sf::Vector2f(0, 0);
+				_jumped = false;
+				_state = PlayerState::Grounded;
+				break;
 			}
 		case Player::Grounded:
 			if (_collisionBox.OnHitReleaseWith(wall.Wall())) {
-				_state = Player::Airborne;
+				_state = PlayerState::Airborne;
+				break;
+			}
+		case PlayerState::None:
+			if (CollisionBox().OnHitWith(wall.Wall()))
+			{
+				_state = PlayerState::Grounded;
+				break;
+			}
+			else {
+				_state = PlayerState::Airborne;
+				break;
 			}
 	}
-	if (CollisionBox().OnHitWith(wall.Wall()))
-	{
-		if (wall.Position().y+(wall.Length()/2)>position.y+(collider.collision[0].position.y-collider.collision[3].position.y)/2) {
-
-			std::cout << "Die?";
-
-		}
-	}
+	
+	
 	switch (_state) {
 		case Player::Airborne:
-			_accelleration = sf::Vector2f(0, -1);
-			_velocity -= sf::Vector2f(0, _jumpForce/_weight);
+			_accelleration = sf::Vector2f(0, -1*_weight);
+			if (_jumped) {
+				_velocity -= sf::Vector2f(0, _weight/10);
+			}
+			//std::cout << "Airborne\n";
 			break;
 		case Player::Grounded:
 			_accelleration = sf::Vector2f(0, 0);
+			//std::cout << "Grounded\n";
+			break;
 	}
-	std::cout << "test";
-	
-	position += _velocity + _accelleration;
 	//std::cout << position.x << " , " << position.y << "\n";
+}
+
+void Player::UpdatePhysics() {
+	position -= (_velocity + _accelleration);
 }
 
 Player::~Player()

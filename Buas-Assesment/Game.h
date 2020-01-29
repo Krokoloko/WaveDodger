@@ -8,7 +8,7 @@ class Game
 public:
 	Game(sf::RenderWindow*);
 
-	enum TriggerEvents {GenerateWave};
+	enum TriggerEvents {GenerateWave, Jump};
 
 	void Start();
 	void Draw();
@@ -23,5 +23,6 @@ private:
 	SineWall wall;
 	Player player;
 	InputManager inputManager;
+	bool generatedWalls;
 };
 
